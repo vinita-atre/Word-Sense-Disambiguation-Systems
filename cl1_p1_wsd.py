@@ -36,7 +36,7 @@ def read_dataset(subset):
 				texts.append(text)
 		return (labels, targets, texts)
 	else:
-		print '>>>> invalid input !!! <<<<<'
+		print('>>>> invalid input !!! <<<<<')
 
 """
 computes f1-score of the classification accuracy
@@ -47,12 +47,23 @@ predicted_labels - is a list of the predicted labels
 output is a tuple of the micro averaged score and the macro averaged score
 
 """
+
 import sklearn.metrics
 def eval(gold_labels, predicted_labels):
 	return ( sklearn.metrics.f1_score(gold_labels, predicted_labels, average='micro'),
 			 sklearn.metrics.f1_score(gold_labels, predicted_labels, average='macro') )
 
+#get the most frequent label in the dataset
+from collections import Counter
 
+def getMostFrequentBaselineClass(labels):
+	data = Counter(labels)	
+	print(data.most_common(1)[0][0]," most frequent class")	
+	return data.most_common(1)[0][0]
+
+#get Accuracy score
+def getAccuracyScore(gold_labels,predicted_labels):
+	return sklearn.metrics.accuracy_score(gold_labels,predicted_labels,normalize=True, sample_weight=None)
 """
 a helper method that takes a list of predictions and writes them to a file (1 prediction per line)
 predictions - list of predictions (strings)
@@ -125,13 +136,24 @@ def run_extended_bow_perceptron_classifier(train_texts, train_targets,train_labe
 
 
 if __name__ == "__main__":
+
     # reading, tokenizing, and normalizing data
     train_labels, train_targets, train_texts = read_dataset('train')
     dev_labels, dev_targets, dev_texts = read_dataset('dev')
     test_labels, test_targets, test_texts = read_dataset('test')
+    
+    #get accuracy scores and print them for train_label and dev_labels
+    print(getAccuracyScore([getMostFrequentBaselineClass(train_labels)]*len(train_labels),train_labels))
+    print(getAccuracyScore([getMostFrequentBaselineClass(dev_labels)]*len(dev_labels),dev_labels))
 
+    
     #running the classifier
-    test_scores = run_naivebayes_classifier(train_texts, train_targets, train_labels, 
-				dev_texts, dev_targets, dev_labels, test_texts, test_targets, test_labels)
+    #test_scores = run_naivebayes_classifier(train_texts, train_targets, train_labels, 
+	#			dev_texts, dev_targets, dev_labels, test_texts, test_targets, test_labels)
 
-    print test_scores
+    #print(test_scores)
+#accuracy answers
+# product  most frequent class
+# 0.525844245348
+# product  most frequent class
+# 0.555377207063
