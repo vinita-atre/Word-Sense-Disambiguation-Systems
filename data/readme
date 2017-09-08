@@ -1,0 +1,13 @@
+The provided dataset is based on "line" dataset
+http://www.d.umn.edu/~tpederse/data.html
+
+The task is to predict a sense of the token line(s) that occurs in a given text segment.
+
+The possible senes are {cord, division, formation, phone, product, text}
+
+The dataset is already partitioned into training (wsd_train.txt), development (wsd_dev.txt),
+and testing (wsd_test.txt) subset.
+
+Each file contains one example per line formatted as 
+sense <tab> text
+
